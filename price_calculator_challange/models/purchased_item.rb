@@ -15,4 +15,14 @@ class PurchasedItem
         end
         quanity * @rate
     end
+
+    def calculate_savings(quanity)
+        if @hasOffer
+            total_cost = quanity * @rate
+            cost_with_offer = (quanity / @minQuantity) * @offerPrice
+            cost_without_offer = (quanity % @minQuantity) * @rate
+            return total_cost - (cost_with_offer + cost_without_offer)
+        end
+        0
+    end
 end
