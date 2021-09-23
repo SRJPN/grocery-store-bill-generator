@@ -1,5 +1,6 @@
 require_relative 'models/purchased_item'
 require_relative 'Models/grocery_store'
+require_relative 'bill_printer'
 
 purchase_list = %w(milk milk bread banana bread bread bread milk apple)
 
@@ -15,4 +16,5 @@ end
 
 store = GroceryStore.new
 bill = store.generate_bill list
-puts bill
+billPrinter = BillPrinter.new
+billPrinter.print bill
