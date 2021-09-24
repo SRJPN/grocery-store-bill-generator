@@ -4,36 +4,55 @@ class BillPrinter
     end
     
     def print bill
-        print_new_line
-        print_new_line
-        print_row @header.collect { |x| x.capitalize }
-        print_line
-        bill.get_list.each { |x|  print_row x }
-        print_new_line
-        print_new_line
-        print_total bill
-        print_savings bill
+        printable = format_printable bill
+
+        printable.each { |x| puts x }
     end
     
     private
 
-    def print_row row
-        puts row.join("\t")
+    def format_printable bill
+        printable = []
+
+        print_new_line printable, bill
+        print_new_line printable, bill
+        print_headers printable, bill
+        print_line printable, bill
+        print_bill_items printable, bill
+        print_new_line printable, bill
+        print_new_line printable, bill
+        print_total printable, bill
+        print_savings printable, bill
+        
+        printable
     end
 
-    def print_line
-        puts Array.new(30).map { |x| "-" }.join('')
+    def print_headers printable, bill
+        printable.push @header.collect { |x| x.capitalize }.join("\t")
+        printable
     end
 
-    def print_total bill
-        puts 'Total price : $' + bill.total_cost.to_s
+    def print_bill_items printable, bill
+        printable.concat bill.get_list.collect { |x| x.join("\t") }
     end
 
-    def print_savings bill
-        puts 'You saved $' + bill.savings.to_s + ' today.'
+    def print_line printable, bill
+        printable.push Array.new(30).map { |x| "-" }.join('')
+        printable
     end
 
-    def print_new_line
-        puts "\n"
+    def print_total printable, bill
+        printable.push 'Total price : $' + bill.total_cost.to_s
+        printable
+    end
+
+    def print_savings printable, bill
+        printable.push 'You saved $' + bill.savings.to_s + ' today.'
+        printable
+    end
+
+    def print_new_line printable, bill
+        printable.push "\n"
+        printable
     end
 end
