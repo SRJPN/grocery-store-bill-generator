@@ -1,9 +1,9 @@
 class GroceryStore
     def initialize
-        milk = PurchasedItem.new('Milk', 3.97, true, 2, 5.00)
-        bread = PurchasedItem.new('Bread', 2.17, true, 3, 6.00)
-        banana = PurchasedItem.new('Banana', 0.99, false)
-        apple = PurchasedItem.new('Apple', 0.89, false)
+        milk = StoreItem.new('Milk', 3.97, true, 2, 5.00)
+        bread = StoreItem.new('Bread', 2.17, true, 3, 6.00)
+        banana = StoreItem.new('Banana', 0.99, false)
+        apple = StoreItem.new('Apple', 0.89, false)
 
         @pricing_table = {
             'milk' => milk,
@@ -14,16 +14,14 @@ class GroceryStore
     end
 
     def generate_bill purchase_list
-        bill = []
+        items = []
 
-        purchase_list.each do |key, value| 
-            bill.push ({
-                'item' => key, 
-                'price' => (@pricing_table[key.downcase].calculate_cost (value)),
-                'savings' => (@pricing_table[key.downcase].calculate_savings (value)),
-                'quantity' => value
-            })
+        purchase_list.each do |key, value|
+            price = @pricing_table[key.downcase].calculate_cost (value)
+            savings = @pricing_table[key.downcase].calculate_savings (value)
+            item = PurchasedItem.new key, price, value, savings 
+            items.push item
         end
-        bill
+        Bill.new items
     end
 end

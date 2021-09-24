@@ -8,7 +8,7 @@ class BillPrinter
         print_new_line
         print_row @header.collect { |x| x.capitalize }
         print_line
-        bill.each { |item| print_row @header.map { |header| item[header].to_s.capitalize } }
+        bill.get_list.each { |x|  print_row x }
         print_new_line
         print_new_line
         print_total bill
@@ -26,11 +26,11 @@ class BillPrinter
     end
 
     def print_total bill
-        puts 'Total price : $' + bill.reduce(0) { |sum, item| sum + item['price'] }.to_s
+        puts 'Total price : $' + bill.total_cost.to_s
     end
 
     def print_savings bill
-        puts 'You saved $' + bill.reduce(0) { |sum, item| sum + item['savings'] }.ceil(2).to_s + ' today.'
+        puts 'You saved $' + bill.savings.to_s + ' today.'
     end
 
     def print_new_line
